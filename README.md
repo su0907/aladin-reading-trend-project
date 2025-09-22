@@ -12,6 +12,7 @@
 
 ## 2. 사용할 데이터
 - 출처: 알라딘 월간 베스트셀러 TOP 50 (2020년 1월 ~ 2025년 9월)
+- https://www.aladin.co.kr/shop/common/wbest.aspx?BranchType=1&CID=0&Year=2025&Month=9&Week=1&BestType=MonthlyBest&SearchSubBarcode=
 - 수집 방식: BeautifulSoup를 활용한 웹 크롤링
 - 데이터 항목: 
   - `year`: 연도
