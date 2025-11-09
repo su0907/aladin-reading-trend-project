@@ -94,17 +94,25 @@
 
 ## 📁 프로젝트 구조
 ```
-📂 aladin-reading-trend-project/
- ┣ 📂 notebooks/               # 분석 노트북 파일들
- ┃  ┣ 01_crawling.ipynb        # 데이터 크롤링
- ┃  ┣ 02_data_preprocessing.ipynb # 데이터 전처리
- ┃  ┣ 03_analysis.ipynb        # 트렌드 분석
- ┃  ┗ 04_visualization.ipynb   # 시각화 결과
- ┣ 📂 utils/                   # 재사용 가능한 함수들
- ┃  ┣ crawler_utils.py         # 크롤링 관련 함수
- ┃  ┣ analysis_utils.py        # 분석 관련 함수
- ┃  ┗ viz_utils.py            # 시각화 관련 함수
- ┗ 📜 requirements.txt         # 필요 라이브러리
+📂 aladin-bestseller-analysis/
+ ┣ 📂 data/                           # 데이터 파일들 (Google Drive 연동)
+ ┃  ┣ 📂 raw/                         # 원본 크롤링 데이터 (비어있음)
+ ┃  ┃  ┗ .gitkeep
+ ┃  ┗ 📂 processed/                   # 전처리된 데이터 (비어있음)
+ ┃     ┗ .gitkeep
+ ┃
+ ┣ 📂 notebooks/                      # Colab 노트북 파일들
+ ┃  ┣ 01_crawling.ipynb              # 데이터 크롤링 (완료)
+ ┃  ┣ 02_data_preprocessing.ipynb    # 데이터 전처리 (완료)
+ ┃  ┣ 03_analysis.ipynb              # 탐색적 데이터 분석 (진행중)
+ ┃  ┗ 04_visualization.ipynb         # 데이터 시각화 (진행중)
+ ┃
+ ┣ 📂 outputs/                        # 최종 결과물 (보고서, 발표자료 등)
+ ┃  ┗ .gitkeep
+ ┃
+ ┣ 📜 .gitignore                      # Git 제외 파일 설정
+ ┣ 📜 README.md                       # 프로젝트 개요
+ ┗ 📜 requirements.txt                # 필요 라이브러리 목록
 ```
 
 ## 분석 결과 활용 가능 분야
