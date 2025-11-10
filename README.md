@@ -107,13 +107,18 @@
  ┃  ┃  ┣ category_mapping.csv
  ┃  ┃  ┣ aladin.csv                        
  ┃  ┃  ┗ .gitkeep
- ┃  ┗ 📂 processed/                   # 전처리된 데이터 (비어있음)
+ ┃  ┗ 📂 processed/                   # 전처리된 데이터
+ ┃  ┃  ┣ aladin_final_cleaned.csv
+ ┃  ┃  ┗ .gitkeep
+ ┃  ┣ 📂 analysis/                    # 분석 통계 결과
+ ┃  ┃  ┗ .gitkeep
+ ┃  ┗ 📂 visualizations/              # 시각화 이미지
  ┃     ┗ .gitkeep
  ┃
  ┣ 📂 notebooks/                      # Colab 노트북 파일들
  ┃  ┣ 01_crawling.ipynb              # 데이터 크롤링 (완료)
  ┃  ┣ 02_data_preprocessing.ipynb    # 데이터 전처리 (완료)
- ┃  ┣ 03_analysis.ipynb              # 탐색적 데이터 분석 (진행중)
+ ┃  ┣ 03_analysis.ipynb              # 데이터 분석 (진행중)
  ┃  ┗ 04_visualization.ipynb         # 데이터 시각화 (진행중)
  ┃
  ┣ 📂 outputs/                        # 최종 결과물 (보고서, 발표자료 등)
