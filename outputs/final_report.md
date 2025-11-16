@@ -83,7 +83,7 @@
 ---
 
 ## 시각화 2 — 연도별 평균 페이지 수 변화  
-![yearly_pages](./data/visualizations/02_yearly_page_count.png)
+![yearly_pages](../data/visualizations/02_yearly_page_count.png)
 
 ### 인사이트
 - 페이지 수는 가격과 달리 **일관된 상승/하락 패턴 없음**
@@ -93,7 +93,7 @@
 ---
 
 ## 시각화 3 — 카테고리별 도서 수 TOP 20  
-![cat_count](./data/visualizations/03_category_book_count.png)
+![cat_count](../data/visualizations/03_category_book_count.png)
 
 ### 인사이트
 - **국내도서 내에서도 특정 장르가 압도적 비중**을 가짐  
@@ -103,7 +103,7 @@
 ---
 
 ## 시각화 4 — 연도별 카테고리 비중 변화  
-![cat_ratio](./data/visualizations/04_yearly_category_ratio.png)
+![cat_ratio](../data/visualizations/04_yearly_category_ratio.png)
 
 ### 인사이트
 - 코로나 시기(2020~21): **에세이·웹툰·아동도서 비중 상승**
@@ -113,7 +113,7 @@
 ---
 
 ## 시각화 5 — 계절별 독서 패턴  
-![monthly_pattern](./data/visualizations/05_monthly_category_pattern.png)
+![monthly_pattern](../data/visualizations/05_monthly_category_pattern.png)
 
 ### 인사이트
 - 가을(9~11월) 도서 소비량 증가 → ‘가을은 독서의 계절’ 패턴 일부 반영  
@@ -122,7 +122,7 @@
 ---
 
 ## 시각화 6 — 한강 노벨문학상 효과 분석  
-![han_kang_effect](./data/visualizations/11_han_kang_vs_total_novels.png)
+![han_kang_effect](../data/visualizations/11_han_kang_vs_total_novels.png)
 
 ### 인사이트
 - 2024년 10월(노벨문학상 수상 직후) 한강 관련 작품 진입 수 급증  
