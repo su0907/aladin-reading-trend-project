@@ -138,6 +138,7 @@ item_id 기준 병합
   - 그러나 출판 시장 전체 신간 평균 가격은 상승 추세 유지
 
 ![price_comparison](../data/visualizations/references/2022_book_price.jpeg)
+
 *출처: 대한출판문화협회(2023.07.17)*
 
   - **베스트셀러 vs 전체 신간 비교 (2022년):**
