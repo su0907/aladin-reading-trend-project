@@ -72,8 +72,8 @@
 
 ---
 
-## 시각화 1 — 연도별 베스트셀러 평균 가격 추이  
-![yearly_price](data/visualizations/01_yearly_price_trend.png)
+### 시각화 1 — 연도별 베스트셀러 평균 가격 추이
+<img src="./data/visualizations/01_yearly_price_trend.png" width="650">
 
 ### 인사이트
 - 2020년 대비 2025년 평균 가격은 **약 11% 상승**
