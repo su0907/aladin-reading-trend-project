@@ -98,34 +98,51 @@
 - 분석:
 - 개발 환경: Google Colab, Google Drive
 
-## 📁 프로젝트 구조
+# 📁 프로젝트 구조
 ```
 📂 aladin-bestseller-analysis/
- ┣ 📂 data/                           # 데이터 파일들 (Google Drive 연동)
+ ┣ 📂 data/                           # 데이터 파일들
  ┃  ┣ 📂 raw/                         # 원본 크롤링 데이터
- ┃  ┃  ┣ category_mapping.csv
- ┃  ┃  ┣ aladin.csv                        
- ┃  ┃  ┗ .gitkeep
- ┃  ┗ 📂 processed/                   # 전처리된 데이터
- ┃  ┃  ┣ aladin_final_cleaned.csv
- ┃  ┃  ┗ .gitkeep
- ┃  ┣ 📂 analysis/                    # 분석 통계 결과
- ┃  ┃  ┗ .gitkeep
- ┃  ┗ 📂 visualizations/              # 시각화 이미지
- ┃     ┗ .gitkeep
+ ┃  ┃  ┣ aladin.csv                  # 1차 크롤링 데이터 (3,550개)
+ ┃  ┃  ┣ detail_mapping.csv          # 2차 크롤링 데이터 (1,960개)
+ ┃  ┃  └ .gitkeep
+ ┃  ┣ 📂 processed/                   # 전처리된 데이터
+ ┃  ┃  ┣ aladin_final_cleaned.csv    # 최종 정제 데이터 (3,517개)
+ ┃  ┃  └ .gitkeep
+ ┃  └ 📂 visualizations/              # 시각화 이미지
+ ┃     ┣ 01_yearly_price_trend.png
+ ┃     ┣ 02_yearly_page_count.png
+ ┃     ┣ 03_category_book_count.png
+ ┃     ┣ 04_yearly_category_ratio.png
+ ┃     ┣ 05_monthly_category_pattern.png
+ ┃     ┣ 06_category_avg_price_top15.png
+ ┃     ┣ 07_price_distribution.png
+ ┃     ┣ 08_author_bestseller_count.png
+ ┃     ┣ 09_category_avg_rank.png
+ ┃     ┣ 10_monthly_rank1_books.png
+ ┃     ┣ 11_han_kang_vs_total_novels.png
+ ┃     ┣ 12_han_kang_before_after.png
+ ┃     ┣ 13_han_kang_books_count.png
+ ┃     ┣ 14_han_kang_price_comparison.png
+ ┃     ┣ 15_han_kang_rating_comparison.png
+ ┃     ┣ 📂 references/              # 외부 참고 자료
+ ┃     ┃  ┣ KOCCA_WEBTOON.png        # 웹툰산업실태조사 그래프
+ ┃     ┃  └ .gitkeep
+ ┃     └ .gitkeep
  ┃
  ┣ 📂 notebooks/                      # Colab 노트북 파일들
- ┃  ┣ 01_crawling.ipynb              # 데이터 크롤링 (완료)
- ┃  ┣ 02_data_preprocessing.ipynb    # 데이터 전처리 (완료)
- ┃  ┣ 03_analysis.ipynb              # 데이터 분석 (진행중)
- ┃  ┗ 04_visualization.ipynb         # 데이터 시각화 (진행중)
+ ┃  ┣ 01_crawling.ipynb               # 1차 크롤링 (베스트셀러 리스트)
+ ┃  ┣ 02_data_preprocessing.ipynb     # 데이터 병합 및 전처리
+ ┃  ┣ 03_visualization.ipynb          # 데이터 시각화 (15개)
+ ┃  └ .gitkeep
  ┃
- ┣ 📂 outputs/                        # 최종 결과물 (보고서, 발표자료 등)
- ┃  ┗ .gitkeep
+ ┣ 📂 outputs/                        # 최종 결과물
+ ┃  ┣ final_report.md                 # 최종 보고서
+ ┃  └ .gitkeep
  ┃
  ┣ 📜 .gitignore                      # Git 제외 파일 설정
- ┣ 📜 README.md                       # 프로젝트 개요
- ┗ 📜 requirements.txt                # 필요 라이브러리 목록
+ ┣ 📜 README.md                       # 프로젝트 개요 및 설명
+ └ 📜 requirements.txt                # 필요 라이브러리 목록
 ```
 
 ## 분석 결과 활용 가능 분야
