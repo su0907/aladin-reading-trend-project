@@ -127,7 +127,7 @@
  ┃     ┣ 14_han_kang_price_comparison.png
  ┃     ┣ 15_han_kang_rating_comparison.png
  ┃     ┣ 📂 references/              # 외부 참고 자료
- ┃     ┃  ┣ KOCCA_WEBTOON.png        # 웹툰산업실태조사 그래프
+ ┃     ┃  ┣ 2022_book_price.jpeg # 대한출판문화협회
  ┃     ┃  └ .gitkeep
  ┃     └ .gitkeep
  ┃
