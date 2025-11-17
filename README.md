@@ -103,13 +103,14 @@
 📂 aladin-bestseller-analysis/
  ┣ 📂 data/                           # 데이터 파일들
  ┃  ┣ 📂 raw/                         # 원본 크롤링 데이터
- ┃  ┃  ┣ aladin.csv                  # 1차 크롤링 데이터 (3,550개)
+ ┃  ┃  ┣ aladin.csv                  # 1차 크롤링 데이터 (3,540개)
  ┃  ┃  ┣ detail_mapping.csv          # 2차 크롤링 데이터 (1,960개)
  ┃  ┃  └ .gitkeep
  ┃  ┣ 📂 processed/                   # 전처리된 데이터
  ┃  ┃  ┣ aladin_final_cleaned.csv    # 최종 정제 데이터 (3,517개)
  ┃  ┃  └ .gitkeep
  ┃  └ 📂 visualizations/              # 시각화 이미지
+ ┃     ┣ 00_yearly_comics_children_check.png
  ┃     ┣ 01_yearly_price_trend.png
  ┃     ┣ 02_yearly_page_count.png
  ┃     ┣ 03_category_book_count.png
@@ -133,7 +134,7 @@
  ┣ 📂 notebooks/                      # Colab 노트북 파일들
  ┃  ┣ 01_crawling.ipynb               # 1차 크롤링 (베스트셀러 리스트)
  ┃  ┣ 02_data_preprocessing.ipynb     # 데이터 병합 및 전처리
- ┃  ┣ 03_visualization.ipynb          # 데이터 시각화 (15개)
+ ┃  ┣ 03_visualization.ipynb          # 데이터 시각화 (16개)
  ┃  └ .gitkeep
  ┃
  ┣ 📂 outputs/                        # 최종 결과물
