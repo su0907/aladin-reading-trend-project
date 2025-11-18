@@ -152,7 +152,6 @@ item_id 기준 병합
 ### 연도별 만화·어린이 베스트셀러 진입 횟수 (검증용)
 
 ![comic_child](../data/visualizations/00_yearly_comics_children_check.png)
-
 #### 주요 데이터
 ```
 2020년: 117회 (만화 40회, 어린이 77회)
