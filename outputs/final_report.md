@@ -136,7 +136,7 @@ item_id 기준 병합
   - 베스트셀러: 2021년 15,386원 → 2022년 14,481원 (-5.9%)
   - 전체 신간: 2021년 17,116원 → 2022년 17,869원 (+4.4%)
 
-![price_comparison](../data/visualizations/references/2022_book_price.jpeg)
+![price_comparison](../data/visualizations/references/2022_book_price.PNG)
 
 *출처: 대한출판문화협회(2023.07.17)*
 
