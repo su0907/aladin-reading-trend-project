@@ -132,7 +132,7 @@
  ┃     └ .gitkeep
  ┃
  ┣ 📂 notebooks/                      # Colab 노트북 파일들
- ┃  ┣ 01_crawling.ipynb               # 1차 크롤링 (베스트셀러 리스트)
+ ┃  ┣ 01_crawling.ipynb               # 1,2차 크롤링
  ┃  ┣ 02_data_preprocessing.ipynb     # 데이터 병합 및 전처리
  ┃  ┣ 03_visualization.ipynb          # 데이터 시각화 (16개)
  ┃  └ .gitkeep
