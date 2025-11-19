@@ -110,9 +110,10 @@
  ┃  ┃  ┣ aladin_final_cleaned.csv    # 최종 정제 데이터 (3,517개)
  ┃  ┃  └ .gitkeep
  ┃  └ 📂 visualizations/              # 시각화 이미지
- ┃     ┣ 00_yearly_comics_children_check.png
+ ┃     ┣ 01_1_yearly_comics_children_check.png
+ ┃     ┣ 01_2_price_verification_by_genre.png
  ┃     ┣ 01_yearly_price_trend.png
- ┃     ┣ 01_price_verification_by_genre.png
+ ┃     ┣ 02_1_page_verification_by_genre.png
  ┃     ┣ 02_yearly_page_count.png
  ┃     ┣ 03_category_book_count.png
  ┃     ┣ 04_yearly_category_ratio.png
