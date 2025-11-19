@@ -112,6 +112,7 @@
  ┃  └ 📂 visualizations/              # 시각화 이미지
  ┃     ┣ 00_yearly_comics_children_check.png
  ┃     ┣ 01_yearly_price_trend.png
+ ┃     ┣ 01_price_verification_by_genre.png
  ┃     ┣ 02_yearly_page_count.png
  ┃     ┣ 03_category_book_count.png
  ┃     ┣ 04_yearly_category_ratio.png
@@ -134,7 +135,7 @@
  ┣ 📂 notebooks/                      # Colab 노트북 파일들
  ┃  ┣ 01_crawling.ipynb               # 1,2차 크롤링
  ┃  ┣ 02_data_preprocessing.ipynb     # 데이터 병합 및 전처리
- ┃  ┣ 03_visualization.ipynb          # 데이터 시각화 (16개)
+ ┃  ┣ 03_visualization.ipynb          # 데이터 시각화 (17개)
  ┃  └ .gitkeep
  ┃
  ┣ 📂 outputs/                        # 최종 결과물
