@@ -528,6 +528,16 @@ TOP 5 카테고리:
 
 ![author_count](../data/visualizations/08_author_bestseller_count.png)
 
+#### 주요 데이터
+```
+TOP 5 작가:
+1. ETS: 132회
+2. 최태성: 117회
+3. David Cho: 68회
+4. 한강: 67회
+5. 이노우에 다케히코: 54회
+```
+
 #### 인사이트
 
 **TOP 4 작가 베스트셀러 다수 진입 원인:**
