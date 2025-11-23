@@ -70,16 +70,60 @@ https://www.aladin.co.kr/shop/common/wbest.aspx?BranchType=1&BestType=Month&Year
 
 ### 2.2.2 HTML 선택자 탐색
 
-Chrome DevTools를 사용하여 HTML 구조를 분석하고 정확한 CSS Selector를 추출했습니다:
+#### 분석 도구: F12 개발자 도구
 
-| 데이터 | CSS Selector | 설명 |
-|--------|--------------|------|
-| 도서 컨테이너 | `div.ss_book_box` | 각 도서의 전체 정보를 담은 컨테이너 |
-| 제목 | `a.bo3` | 도서 제목 |
-| 저자 | `li.ss_aut a` | 저자명 |
-| 카테고리 | `span.tit_category` | 상위 카테고리 |
-| 가격 | `span.ss_p2 b` | 판매가 |
-| 평점 | `span.Ere_fs14.Ere_str` | 별점 |
+웹 브라우저의 F12 개발자 도구를 사용하여 HTML 구조를 분석했습니다.
+
+**단계별 분석 과정:**
+
+**1단계: 개발자 도구 실행**
+```
+알라딘 베스트셀러 페이지에서 F12 키 입력
+→ 하단에 개발자 도구 패널 표시
+```
+
+**2단계: Elements 탭 활용**
+```
+Elements 탭 클릭
+→ 웹페이지의 전체 HTML 구조 표시
+```
+
+**3단계: 요소 검사 (Inspect)**
+```
+개발자 도구 좌측 상단 화살표 아이콘 클릭
+→ 페이지에서 원하는 요소 클릭
+→ 해당 요소의 HTML 코드가 자동으로 하이라이트됨
+```
+
+**4단계: CSS Selector 추출**
+```
+HTML 요소 우클릭
+→ Copy > Copy selector
+→ 정확한 CSS Selector 복사됨
+```
+
+#### 추출된 CSS Selector
+
+| 데이터 | CSS Selector | 추출 방법 |
+|--------|--------------|-----------|
+| 도서 컨테이너 | `div.ss_book_box` | 반복되는 도서 블록 확인 |
+| 제목 | `a.bo3` | 제목 텍스트 클릭 → Copy selector |
+| 저자 | `li.ss_aut a` | 저자명 클릭 → Copy selector |
+| 카테고리 | `span.tit_category` | 카테고리 텍스트 클릭 |
+| 가격 | `span.ss_p2 b` | 가격 영역 클릭 |
+| 평점 | `span.Ere_fs14.Ere_str` | 별점 영역 클릭 |
+
+#### 검증 과정
+
+추출한 CSS Selector가 정확한지 개발자 도구의 **Console 탭**에서 검증했습니다:
+```javascript
+// Console 탭에서 실행
+document.querySelectorAll("div.ss_book_box").length
+// 결과: 50 (정상)
+
+document.querySelector("div.ss_book_box a.bo3").textContent
+// 결과: "소년이 온다" (제목 정상 추출)
+```
 
 ### 2.2.3 크롤링 코드 구현
 ```python
@@ -203,7 +247,7 @@ print(f"Total books collected: {len(df)}")
 URL: https://www.aladin.co.kr/shop/wproduct.aspx?ItemId={item_id}
 
 추출 정보:
-1. real_category (상세 카테고리)
+1. detail_category (상세 카테고리)
    - 선택자: ul.conts_info_list1 li
    - 예시: "국내도서 > 소설/시/희곡 > 한국소설"
    
@@ -231,7 +275,7 @@ def crawl_book_detail(item_id):
     
     Returns:
     --------
-    dict : {'item_id', 'real_category', 'page_count'}
+    dict : {'item_id', 'detail_category', 'page_count'}
     """
     url = f"https://www.aladin.co.kr/shop/wproduct.aspx?ItemId={item_id}"
     
@@ -246,12 +290,12 @@ def crawl_book_detail(item_id):
         
         # 카테고리 추출
         category_tag = soup.select_one("ul.conts_info_list1 li")
-        real_category = "N/A"
+        detail_category = "N/A"
         if category_tag:
             category_text = category_tag.text.strip()
             if '>' in category_text:
                 parts = category_text.split('>')
-                real_category = parts[1].strip() if len(parts) > 1 else "N/A"
+                detail_category = parts[1].strip() if len(parts) > 1 else "N/A"
         
         # 페이지 수 추출
         page_count = 0
@@ -264,7 +308,7 @@ def crawl_book_detail(item_id):
         
         return {
             'item_id': item_id,
-            'real_category': real_category,
+            'detail_category': detail_category,
             'page_count': page_count
         }
     
@@ -272,7 +316,7 @@ def crawl_book_detail(item_id):
         print(f"Error crawling {item_id}: {e}")
         return {
             'item_id': item_id,
-            'real_category': None,
+            'detail_category': None,
             'page_count': 0
         }
 
@@ -338,7 +382,7 @@ print(len(items))  # 49개만 반환 (50개 예상)
 **원인 분석:**
 
 1. **HTML 구조 확인:**
-   - Chrome DevTools로 확인 시 50위 도서가 페이지에 존재
+   - F12 개발자 도구로 확인 시 50위 도서가 페이지에 존재
    - BeautifulSoup 파싱 결과에는 49개만 포함
 
 2. **가설:**
@@ -380,7 +424,7 @@ time.sleep(3)  # 3초 대기 후 파싱
 
 **문제:**
 - 성인 인증이 필요한 도서는 상세 페이지 접근 불가
-- `real_category` = `None`, `page_count` = `0`으로 수집됨
+- `detail_category` = `None`, `page_count` = `0`으로 수집됨
 
 **영향받은 데이터:**
 ```
@@ -403,7 +447,7 @@ data/
 │   │
 │   └── detail_mapping.csv      # 2차 크롤링 결과
 │       ├── 행 수: 1,958개 (고유 도서)
-│       ├── 컬럼: item_id, real_category, page_count
+│       ├── 컬럼: item_id, detail_category, page_count
 │       └── 인코딩: UTF-8-sig
 │
 └── processed/
@@ -438,12 +482,12 @@ data/
 ```
 총 행 수: 1,958개 (고유 도서)
 결측치:
-- real_category: 21개 (1.1%)
+- detail_category: 21개 (1.1%)
 - page_count: 0개 (모두 값 존재, 단 21개가 0)
 
 특징:
 - item_id 기준 1:1 매칭
-- real_category: "소설/시/희곡" 등 구체적 카테고리
+- detail_category: "소설/시/희곡" 등 구체적 카테고리
 - page_count: 0인 경우 = 성인 도서 (접근 불가)
 ```
 
@@ -486,9 +530,9 @@ aladin.csv 고유 도서: 1,960개
 detail_mapping.csv: 1,958개 행 (고유 도서)
 
 [병합 전] detail_mapping.csv 결측치:
-item_id           0개
-real_category    21개 (1.1%) ← 성인 도서
-page_count        0개
+item_id             0개
+detail_category    21개 (1.1%) ← 성인 도서
+page_count          0개
 
 병합 후: 3,539개 행
 ```
@@ -519,7 +563,7 @@ price                   0개
 star_score              0개
 item_id                 0개
 page_count              0개
-real_category          22개 (0.6%) ← 21개 고유 도서가 22회 진입
+detail_category        22개 (0.6%) ← 21개 고유 도서가 22회 진입
 ```
 
 **22개 vs 21개 차이 원인:**
@@ -531,15 +575,15 @@ real_category          22개 (0.6%) ← 21개 고유 도서가 22회 진입
 
 ### 3.2.1 카테고리 업데이트 로직
 ```python
-# real_category가 유효한 경우 category 업데이트
+# detail_category가 유효한 경우 category 업데이트
 has_new_category = (
-    df_merged['real_category'].notnull() & 
-    (df_merged['real_category'] != 'N/A')
+    df_merged['detail_category'].notnull() & 
+    (df_merged['detail_category'] != 'N/A')
 )
 
 # 업데이트 실행
 df_merged.loc[has_new_category, 'category'] = \
-    df_merged.loc[has_new_category, 'real_category']
+    df_merged.loc[has_new_category, 'detail_category']
 
 # 통계 출력
 print(f"카테고리 업데이트 성공: {has_new_category.sum()}개")
@@ -551,13 +595,13 @@ print(f"카테고리 업데이트 실패: {(~has_new_category).sum()}개")
 카테고리 업데이트 성공: 3,517개 (99.4%)
 카테고리 업데이트 실패: 22개 (0.6%)
 
-업데이트 실패 사유: 성인 도서 (real_category = NaN)
+업데이트 실패 사유: 성인 도서 (detail_category = NaN)
 ```
 
 ### 3.2.2 Before / After 비교
 
-| item_id | category (Before) | real_category | category (After) |
-|---------|-------------------|---------------|------------------|
+| item_id | category (Before) | detail_category | category (After) |
+|---------|-------------------|-----------------|------------------|
 | 123456 | 국내도서 | 소설/시/희곡 | 소설/시/희곡 ✅ |
 | 234567 | 국내도서 | 인문학 | 인문학 ✅ |
 | 345678 | 국내도서 | NaN | 국내도서 ❌ (성인) |
@@ -605,7 +649,7 @@ page_count = 0인 도서: 22개 (0.6%)
 
 ### 3.3.2 제거 대상 분석
 
-성인 도서는 **page_count = 0 AND real_category = NaN** 조건으로 식별합니다.
+성인 도서는 **page_count = 0 AND detail_category = NaN** 조건으로 식별합니다.
 ```python
 # 제거 조건
 df_merged['category_updated'] = has_new_category
@@ -828,7 +872,7 @@ print(f"평균 평점: {df_cleaned['star_score'].mean():.2f}점")
               ↓
 ┌─────────────────────────────────────┐
 │   2. 카테고리 업데이트               │
-│   - real_category → category        │
+│   - detail_category → category      │
 │   - 성공: 3,517개 (99.4%)           │
 │   - 실패: 22개 (0.6%, 성인 도서)    │
 └─────────────┬───────────────────────┘
@@ -842,7 +886,7 @@ print(f"평균 평점: {df_cleaned['star_score'].mean():.2f}점")
 ┌─────────────────────────────────────┐
 │   4. 성인 도서 제거                  │
 │   - 조건: page_count=0 AND          │
-│          real_category=NaN          │
+│          detail_category=NaN        │
 │   - 제거: 22개 행 (21개 고유 도서)  │
 └─────────────┬───────────────────────┘
               ↓
