@@ -153,17 +153,17 @@ URL: https://www.aladin.co.kr/shop/wproduct.aspx?ItemId={item_id}
 
 추출 정보:
 1. detail_category (상세 카테고리)
-   - 선택자: ul.conts_info_list1 li
-   - 예시: "국내도서 > 소설/시/희곡 > 한국소설"
+   - 선택자: ul#ulCategory li a
+   - 예시: "국내도서 > 소설/시/희곡"
    
 2. page_count (페이지 수)
-   - 선택자: ul.conts_info_list1 li
+   - 선택자: div.conts_info_list1 ul li
    - 예시: "368쪽"
 ```
 
 ### 2.3.3 병렬 처리 구현
 
-고유 도서 1,958개의 상세 페이지를 효율적으로 크롤링하기 위해 **ThreadPoolExecutor**를 사용한 병렬 처리를 구현했습니다 (10개 스레드 동시 실행).
+고유 도서 1,958개의 상세 페이지를 효율적으로 크롤링하기 위해 **ThreadPoolExecutor**를 사용한 병렬 처리를 구현했습니다 (15개 스레드 동시 실행).
 
 > **Note:** 전체 코드는 [GitHub Repository](https://github.com/su0907/aladin-reading-trend-project/blob/main/notebooks/01_crawling.ipynb)에서 확인 가능합니다.
 
@@ -200,7 +200,6 @@ URL: https://www.aladin.co.kr/shop/wproduct.aspx?ItemId={item_id}
 **최종 결론:**
 - 11개 데이터 누락 (전체의 0.3%)
 - 분석에 미치는 영향 미미
-- 향후 개선 과제로 남김
 
 ---
 
@@ -225,21 +224,18 @@ data/
 ├── raw/
 │   ├── aladin.csv              # 1차 크롤링 결과
 │   │   ├── 행 수: 3,539개
-│   │   ├── 컬럼: year, month, rank, title, author, 
-│   │   │        category, price, star_score, item_id
-│   │   └── 인코딩: UTF-8-sig
+│   │   └── 컬럼: year, month, rank, title, author, 
+│   │            category, price, star_score, item_id
 │   │
 │   └── detail_mapping.csv      # 2차 크롤링 결과
 │       ├── 행 수: 1,958개 (고유 도서)
-│       ├── 컬럼: item_id, detail_category, page_count
-│       └── 인코딩: UTF-8-sig
+│       └── 컬럼: item_id, detail_category, page_count
 │
 └── processed/
     └── aladin_final_cleaned.csv  # 최종 정제 데이터
         ├── 행 수: 3,517개
-        ├── 컬럼: year, month, rank, title, author,
-        │        category, price, star_score, item_id, page_count
-        └── 인코딩: UTF-8-sig
+        └── 컬럼: year, month, rank, title, author,
+                 category, price, star_score, item_id, page_count        
 ```
 
 ---
@@ -272,7 +268,7 @@ data/
 특징:
 - item_id 기준 1:1 매칭
 - detail_category: "소설/시/희곡" 등 구체적 카테고리
-- page_count: 0인 경우 = 성인 도서 (접근 불가)
+- page_count = 0이면서 detail_category = NaN인 경우 = 성인 도서 (접근 불가)
 ```
 
 ### 3.1.2 병합 과정
@@ -401,7 +397,7 @@ item_id + year + month 중복: 0개 ✅
 | rank | int64 | 순위 (1~50) | 0 | 1 |
 | title | object | 도서명 | 0 | 소년이 온다 |
 | author | object | 저자명 | 0 | 한강 |
-| category | object | 카테고리 (21개) | 0 | 소설/시/희곡 |
+| category | object | 카테고리 (22개) | 0 | 소설/시/희곡 |
 | price | int64 | 가격 (원) | 0 | 14,220 |
 | star_score | float64 | 평점 (0~10) | 0 | 9.2 |
 | item_id | object | 도서 고유 ID | 0 | 8936433660 |
@@ -410,9 +406,9 @@ item_id + year + month 중복: 0개 ✅
 ### 3.5.2 최종 통계
 ```
 총 행 수: 3,517개
-고유 도서: 1,939개
+고유 도서: 1,937개
 기간: 2020년 1월 ~ 2025년 11월
-카테고리: 21개
+카테고리: 22개
 평균 가격: 15,296원
 평균 페이지: 334쪽
 평균 평점: 9.05점
@@ -462,8 +458,8 @@ item_id + year + month 중복: 0개 ✅
 ┌─────────────────────────────────────┐
 │   최종 데이터                        │
 │   - 3,517개 행                      │
-│   - 1,939개 고유 도서               │
-│   - 21개 카테고리                   │
+│   - 1,937개 고유 도서               │
+│   - 22개 카테고리                   │
 │   - 결측치: 0개                     │
 └─────────────────────────────────────┘
 ```
