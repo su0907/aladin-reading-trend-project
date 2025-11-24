@@ -56,55 +56,17 @@ https://www.aladin.co.kr/shop/common/wbest.aspx?BranchType=1&BestType=Month&Year
 
 웹 브라우저의 F12 개발자 도구를 사용하여 HTML 구조를 분석했습니다.
 
-**단계별 분석 과정:**
-
-**1단계: 개발자 도구 실행**
-```
-알라딘 베스트셀러 페이지에서 F12 키 입력
-→ 하단에 개발자 도구 패널 표시
-```
-
-**2단계: Elements 탭 활용**
-```
-Elements 탭 클릭
-→ 웹페이지의 전체 HTML 구조 표시
-```
-
-**3단계: 요소 검사 (Inspect)**
-```
-개발자 도구 좌측 상단 화살표 아이콘 클릭
-→ 페이지에서 원하는 요소 클릭
-→ 해당 요소의 HTML 코드가 자동으로 하이라이트됨
-```
-
-**4단계: CSS Selector 추출**
-```
-HTML 요소 우클릭
-→ Copy > Copy selector
-→ 정확한 CSS Selector 복사됨
-```
-
 #### 추출된 CSS Selector
 
-| 데이터 | CSS Selector | 추출 방법 |
-|--------|--------------|-----------|
-| 도서 컨테이너 | `div.ss_book_box` | 반복되는 도서 블록 확인 |
-| 제목 | `a.bo3` | 제목 텍스트 클릭 → Copy selector |
-| 저자 | `li.ss_aut a` | 저자명 클릭 → Copy selector |
-| 카테고리 | `span.tit_category` | 카테고리 텍스트 클릭 |
-| 가격 | `span.ss_p2 b` | 가격 영역 클릭 |
-| 평점 | `span.Ere_fs14.Ere_str` | 별점 영역 클릭 |
+| 데이터 | CSS Selector |
+|--------|--------------|
+| 도서 컨테이너 | `div.ss_book_box` |
+| 제목 | `a.bo3` |
+| 저자 | `li.ss_aut a` |
+| 카테고리 | `span.tit_category` |
+| 가격 | `span.ss_p2 b` |
+| 평점 | `span.Ere_fs14.Ere_str` |
 
-#### 검증 과정
-
-추출한 CSS Selector가 정확한지 개발자 도구의 **Console 탭**에서 검증했습니다:
-```javascript
-// Console 탭에서 실행
-document.querySelectorAll("div.ss_book_box").length
-// 결과: 50 (정상)
-
-document.querySelector("div.ss_book_box a.bo3").textContent
-// 결과: "소년이 온다" (제목 정상 추출)
 ```
 
 ### 2.2.3 크롤링 코드 구현
