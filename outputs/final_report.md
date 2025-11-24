@@ -128,7 +128,7 @@ for year in range(2020, 2026):
         time.sleep(1)  # 서버 부하 방지
 ```
 
-> **Note:** 전체 코드는 [GitHub Repository](https://github.com/username/aladin-project)에서 확인 가능합니다.
+> **Note:** 전체 코드는 [GitHub Repository](https://github.com/su0907/aladin-reading-trend-project/blob/main/notebooks/01_crawling.ipynb)에서 확인 가능합니다.
 
 ### 2.2.4 수집 결과
 ```
