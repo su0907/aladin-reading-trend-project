@@ -2,7 +2,7 @@
 
 **기간:** 2020년 1월 ~ 2025년 11월 (71개월)  
 **분석 대상:** 알라딘 월간 베스트셀러 TOP 50  
-**GitHub:** https://github.com/username/aladin-project
+**GitHub:** https://github.com/su0907/aladin-reading-trend-project
 
 ---
 
