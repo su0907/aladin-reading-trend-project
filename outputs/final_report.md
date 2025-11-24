@@ -52,11 +52,7 @@ https://www.aladin.co.kr/shop/common/wbest.aspx?BranchType=1&BestType=Month&Year
 
 ### 2.2.2 HTML 선택자 탐색
 
-#### 분석 도구: F12 개발자 도구
-
-웹 브라우저의 F12 개발자 도구를 사용하여 HTML 구조를 분석했습니다.
-
-#### 추출된 CSS Selector
+웹 브라우저의 F12 개발자 도구를 사용하여 HTML 구조를 분석하고, 다음과 같은 CSS Selector를 추출했습니다:
 
 | 데이터 | CSS Selector |
 |--------|--------------|
@@ -67,91 +63,59 @@ https://www.aladin.co.kr/shop/common/wbest.aspx?BranchType=1&BestType=Month&Year
 | 가격 | `span.ss_p2 b` |
 | 평점 | `span.Ere_fs14.Ere_str` |
 
+### 2.2.3 크롤링 코드 (핵심 로직)
+
+**도서 정보 추출 부분:**
+```python
+# 도서 정보 추출
+items = soup.select("div.ss_book_box")
+books = []
+
+for rank, item in enumerate(items, 1):
+    try:
+        # 제목
+        title_tag = item.select_one("a.bo3")
+        title = title_tag.text.strip() if title_tag else "N/A"
+        
+        # 저자
+        author_tag = item.select_one("li.ss_aut a")
+        author = author_tag.text.strip() if author_tag else "N/A"
+        
+        # 카테고리
+        category_tag = item.select_one("span.tit_category")
+        category = category_tag.text.strip() if category_tag else "N/A"
+        
+        # 가격
+        price_tag = item.select_one("span.ss_p2 b")
+        price = int(price_tag.text.strip().replace(',', '')) if price_tag else 0
+        
+        # 평점
+        star_tag = item.select_one("span.Ere_fs14.Ere_str")
+        star_score = float(star_tag.text.strip()) if star_tag else 0.0
+        
+        # item_id (도서 고유 ID)
+        link_tag = item.select_one("a.bo3")
+        item_id = link_tag['href'].split('ItemId=')[1].split('&')[0] if link_tag else "N/A"
+        
+        books.append({
+            'year': year,
+            'month': month,
+            'rank': rank,
+            'title': title,
+            'author': author,
+            'category': category,
+            'price': price,
+            'star_score': star_score,
+            'item_id': item_id
+        })
+    except Exception as e:
+        print(f"Error at {year}-{month} rank {rank}: {e}")
+        continue
 ```
 
-### 2.2.3 크롤링 코드 구현
+**전체 기간 크롤링 설정:**
 ```python
-import urllib.request
-from bs4 import BeautifulSoup
-import pandas as pd
-import time
-
-def crawl_bestseller(year, month):
-    """
-    알라딘 월간 베스트셀러 TOP 50 크롤링
-    
-    Parameters:
-    -----------
-    year : int
-        크롤링할 연도 (2020~2025)
-    month : int
-        크롤링할 월 (1~12)
-    
-    Returns:
-    --------
-    list : 도서 정보 딕셔너리 리스트
-    """
-    url = f"https://www.aladin.co.kr/shop/common/wbest.aspx?BranchType=1&BestType=Month&Year={year}&Month={month}"
-    
-    # User-Agent 설정 (크롤링 차단 방지)
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-    }
-    
-    # HTML 요청 및 파싱
-    req = urllib.request.Request(url, headers=headers)
-    response = urllib.request.urlopen(req)
-    html = response.read().decode('utf-8')
-    soup = BeautifulSoup(html, 'html.parser')
-    
-    # 도서 정보 추출
-    items = soup.select("div.ss_book_box")
-    books = []
-    
-    for rank, item in enumerate(items, 1):
-        try:
-            # 제목
-            title_tag = item.select_one("a.bo3")
-            title = title_tag.text.strip() if title_tag else "N/A"
-            
-            # 저자
-            author_tag = item.select_one("li.ss_aut a")
-            author = author_tag.text.strip() if author_tag else "N/A"
-            
-            # 카테고리
-            category_tag = item.select_one("span.tit_category")
-            category = category_tag.text.strip() if category_tag else "N/A"
-            
-            # 가격
-            price_tag = item.select_one("span.ss_p2 b")
-            price = int(price_tag.text.strip().replace(',', '')) if price_tag else 0
-            
-            # 평점
-            star_tag = item.select_one("span.Ere_fs14.Ere_str")
-            star_score = float(star_tag.text.strip()) if star_tag else 0.0
-            
-            # item_id (도서 고유 ID)
-            link_tag = item.select_one("a.bo3")
-            item_id = link_tag['href'].split('ItemId=')[1].split('&')[0] if link_tag else "N/A"
-            
-            books.append({
-                'year': year,
-                'month': month,
-                'rank': rank,
-                'title': title,
-                'author': author,
-                'category': category,
-                'price': price,
-                'star_score': star_score,
-                'item_id': item_id
-            })
-        except Exception as e:
-            print(f"Error at {year}-{month} rank {rank}: {e}")
-            continue
-    
-    return books
-
-# 전체 기간 크롤링 실행
+# 전체 기간 크롤링 실행 (2020년 1월 ~ 2025년 11월)
 all_books = []
 for year in range(2020, 2026):
     for month in range(1, 13):
@@ -162,12 +126,9 @@ for year in range(2020, 2026):
         books = crawl_bestseller(year, month)
         all_books.extend(books)
         time.sleep(1)  # 서버 부하 방지
-
-# DataFrame 변환 및 저장
-df = pd.DataFrame(all_books)
-df.to_csv('data/raw/aladin.csv', encoding='utf-8-sig', index=False)
-print(f"Total books collected: {len(df)}")
 ```
+
+> **Note:** 전체 코드는 [GitHub Repository](https://github.com/username/aladin-project)에서 확인 가능합니다.
 
 ### 2.2.4 수집 결과
 ```
@@ -202,83 +163,9 @@ URL: https://www.aladin.co.kr/shop/wproduct.aspx?ItemId={item_id}
 
 ### 2.3.3 병렬 처리 구현
 
-고유 도서 1,960개의 상세 페이지를 효율적으로 크롤링하기 위해 병렬 처리를 구현했습니다:
-```python
-from concurrent.futures import ThreadPoolExecutor
-import urllib.request
-from bs4 import BeautifulSoup
+고유 도서 1,960개의 상세 페이지를 효율적으로 크롤링하기 위해 **ThreadPoolExecutor**를 사용한 병렬 처리를 구현했습니다 (10개 스레드 동시 실행).
 
-def crawl_book_detail(item_id):
-    """
-    도서 상세 페이지에서 카테고리 및 페이지 수 추출
-    
-    Parameters:
-    -----------
-    item_id : str
-        도서 고유 ID
-    
-    Returns:
-    --------
-    dict : {'item_id', 'detail_category', 'page_count'}
-    """
-    url = f"https://www.aladin.co.kr/shop/wproduct.aspx?ItemId={item_id}"
-    
-    try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
-        req = urllib.request.Request(url, headers=headers)
-        response = urllib.request.urlopen(req, timeout=10)
-        html = response.read().decode('utf-8')
-        soup = BeautifulSoup(html, 'html.parser')
-        
-        # 카테고리 추출
-        category_tag = soup.select_one("ul.conts_info_list1 li")
-        detail_category = "N/A"
-        if category_tag:
-            category_text = category_tag.text.strip()
-            if '>' in category_text:
-                parts = category_text.split('>')
-                detail_category = parts[1].strip() if len(parts) > 1 else "N/A"
-        
-        # 페이지 수 추출
-        page_count = 0
-        info_items = soup.select("ul.conts_info_list1 li")
-        for item in info_items:
-            text = item.text.strip()
-            if '쪽' in text:
-                page_count = int(text.replace('쪽', '').strip())
-                break
-        
-        return {
-            'item_id': item_id,
-            'detail_category': detail_category,
-            'page_count': page_count
-        }
-    
-    except Exception as e:
-        print(f"Error crawling {item_id}: {e}")
-        return {
-            'item_id': item_id,
-            'detail_category': None,
-            'page_count': 0
-        }
-
-# 고유 item_id 추출
-unique_item_ids = df['item_id'].unique().tolist()
-print(f"고유 도서 수: {len(unique_item_ids)}개")
-
-# 병렬 크롤링 (10개 스레드)
-detail_data = []
-with ThreadPoolExecutor(max_workers=10) as executor:
-    results = executor.map(crawl_book_detail, unique_item_ids)
-    detail_data = list(results)
-
-# DataFrame 변환 및 저장
-df_detail = pd.DataFrame(detail_data)
-df_detail.to_csv('data/raw/detail_mapping.csv', encoding='utf-8-sig', index=False)
-print(f"Detail data collected: {len(df_detail)}")
-```
+> **Note:** 전체 코드는 [GitHub Repository](https://github.com/username/aladin-project)에서 확인 가능합니다.
 
 ### 2.3.4 수집 결과
 ```
@@ -294,68 +181,24 @@ print(f"Detail data collected: {len(df_detail)}")
 ### 이슈 1: HTML 선택자 오타
 
 **문제:**
-```python
-# 초기 코드 (오타)
-category_tag = item.select_one("span.tit_catrgory")  # "category" 스펠링 오류
-```
-
-**증상:**
+- 초기 코드에서 `span.tit_catrgory`로 오타 발생 ("category" 스펠링 오류)
 - 모든 도서의 `category` 값이 `None`으로 수집됨
-- 카테고리 정보 완전 손실
 
 **해결:**
-```python
-# 수정 코드
-category_tag = item.select_one("span.tit_category")  # 정확한 스펠링
-```
-
-**결과:**
-- 카테고리 정보 정상 수집
-- "국내도서", "외국도서" 등 포괄 카테고리 확보
+- `span.tit_category`로 수정
+- 카테고리 정보 정상 수집 확인
 
 ---
 
 ### 이슈 2: 50위 도서 크롤링 실패
 
 **문제:**
-```python
-items = soup.select("div.ss_book_box")
-print(len(items))  # 49개만 반환 (50개 예상)
-```
+- BeautifulSoup 파싱 결과 49개만 수집 (50개 예상)
+- F12 개발자 도구로 확인 시 50위 도서가 페이지에 존재
 
-**원인 분석:**
-
-1. **HTML 구조 확인:**
-   - F12 개발자 도구로 확인 시 50위 도서가 페이지에 존재
-   - BeautifulSoup 파싱 결과에는 49개만 포함
-
-2. **가설:**
-   - 동적 로딩: 50위 항목이 JavaScript로 동적 렌더링
-   - HTML 구조 차이: 50위 항목의 클래스명이 다름
-   - 광고 슬롯: 50위 위치에 광고가 삽입되는 경우
-
-**해결 시도 1: Selenium 사용**
-```python
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-
-driver = webdriver.Chrome()
-driver.get(url)
-WebDriverWait(driver, 10).until(...)  # JavaScript 렌더링 대기
-items = driver.find_elements(By.CSS_SELECTOR, "div.ss_book_box")
-```
-
-**결과:** Google Colab 환경에서 Chrome Driver 설치 실패
-
-**해결 시도 2: 대기 시간 추가**
-```python
-import time
-response = urllib.request.urlopen(req)
-time.sleep(3)  # 3초 대기 후 파싱
-```
-
-**결과:** 여전히 49개만 수집
+**해결 시도:**
+1. **Selenium 사용:** Google Colab 환경에서 Chrome Driver 설치 실패
+2. **대기 시간 추가:** 여전히 49개만 수집
 
 **최종 결론:**
 - 11개 데이터 누락 (전체의 0.3%)
@@ -436,78 +279,23 @@ data/
 ```
 
 ### 3.1.2 병합 과정
-```python
-import pandas as pd
 
-# 데이터 로드
-df_aladin = pd.read_csv('data/raw/aladin.csv', 
-                        index_col=0, 
-                        dtype={'item_id': str})
-
-df_detail = pd.read_csv('data/raw/detail_mapping.csv', 
-                        dtype={'item_id': str})
-
-print(f"aladin.csv: {len(df_aladin):,}개 행")
-print(f"aladin.csv 고유 도서: {df_aladin['item_id'].nunique():,}개")
-print(f"detail_mapping.csv: {len(df_detail):,}개 행 (고유 도서)")
-
-# 병합 전 결측치 확인
-print("\n[병합 전] detail_mapping.csv 결측치:")
-print(df_detail.isnull().sum())
-
-# 병합 (LEFT JOIN)
-df_merged = pd.merge(
-    df_aladin,
-    df_detail.drop_duplicates(subset=['item_id']),  # 중복 제거
-    on='item_id',
-    how='left',
-    suffixes=('', '_new')
-)
-
-print(f"\n병합 후: {len(df_merged):,}개 행")
+**병합 전 결측치:**
+```
+detail_mapping.csv:
+- item_id: 0개
+- detail_category: 21개 (1.1%) ← 성인 도서
+- page_count: 0개
 ```
 
-**실행 결과:**
-```
-aladin.csv: 3,539개 행
-aladin.csv 고유 도서: 1,960개
-detail_mapping.csv: 1,958개 행 (고유 도서)
+**병합 실행:**
+- LEFT JOIN (item_id 기준)
+- 1차 크롤링 데이터에 2차 크롤링 데이터 병합
+- 결과: 3,539개 행
 
-[병합 전] detail_mapping.csv 결측치:
-item_id             0개
-detail_category    21개 (1.1%) ← 성인 도서
-page_count          0개
-
-병합 후: 3,539개 행
+**병합 후 결측치:**
 ```
-
-### 3.1.3 병합 후 데이터 상태
-```python
-# 병합 후 결측치 확인
-print("\n[병합 후] 결측치 분석:")
-null_after = df_merged.isnull().sum()
-for col, count in null_after.items():
-    if count > 0:
-        percentage = (count / len(df_merged)) * 100
-        print(f"{col:20s} {count:4d}개 ({percentage:.1f}%)")
-    else:
-        print(f"{col:20s} {count:4d}개")
-```
-
-**실행 결과:**
-```
-[병합 후] 결측치 분석:
-year                    0개
-month                   0개
-rank                    0개
-category                0개
-title                   0개
-author                  0개
-price                   0개
-star_score              0개
-item_id                 0개
-page_count              0개
-detail_category        22개 (0.6%) ← 21개 고유 도서가 22회 진입
+detail_category: 22개 (0.6%) ← 21개 고유 도서가 22회 진입
 ```
 
 **22개 vs 21개 차이 원인:**
@@ -517,24 +305,9 @@ detail_category        22개 (0.6%) ← 21개 고유 도서가 22회 진입
 
 ## 3.2 카테고리 정제
 
-### 3.2.1 카테고리 업데이트 로직
-```python
-# detail_category가 유효한 경우 category 업데이트
-has_new_category = (
-    df_merged['detail_category'].notnull() & 
-    (df_merged['detail_category'] != 'N/A')
-)
+### 3.2.1 카테고리 업데이트
 
-# 업데이트 실행
-df_merged.loc[has_new_category, 'category'] = \
-    df_merged.loc[has_new_category, 'detail_category']
-
-# 통계 출력
-print(f"카테고리 업데이트 성공: {has_new_category.sum()}개")
-print(f"카테고리 업데이트 실패: {(~has_new_category).sum()}개")
-```
-
-**실행 결과:**
+**업데이트 결과:**
 ```
 카테고리 업데이트 성공: 3,517개 (99.4%)
 카테고리 업데이트 실패: 22개 (0.6%)
@@ -551,12 +324,6 @@ print(f"카테고리 업데이트 실패: {(~has_new_category).sum()}개")
 | 345678 | 국내도서 | NaN | 국내도서 ❌ (성인) |
 
 ### 3.2.3 최종 카테고리 분포
-```python
-print("\n최종 카테고리 분포 (TOP 10):")
-print(df_merged['category'].value_counts().head(10))
-```
-
-**실행 결과:**
 ```
 소설/시/희곡     742개
 만화           453개
@@ -573,20 +340,6 @@ print(df_merged['category'].value_counts().head(10))
 ## 3.3 결측치 처리
 
 ### 3.3.1 페이지 수 업데이트
-```python
-# page_count_new가 있으면 page_count 업데이트
-if 'page_count_new' in df_merged.columns:
-    df_merged['page_count'] = df_merged['page_count_new'].fillna(
-        df_merged['page_count']
-    )
-    df_merged = df_merged.drop(columns=['page_count_new'])
-
-# 페이지 수 0인 도서 확인
-page_zero = (df_merged['page_count'] == 0).sum()
-print(f"page_count = 0인 도서: {page_zero}개")
-```
-
-**실행 결과:**
 ```
 page_count = 0인 도서: 22개 (0.6%)
 ```
@@ -594,30 +347,6 @@ page_count = 0인 도서: 22개 (0.6%)
 ### 3.3.2 제거 대상 분석
 
 성인 도서는 **page_count = 0 AND detail_category = NaN** 조건으로 식별합니다.
-```python
-# 제거 조건
-df_merged['category_updated'] = has_new_category
-condition_remove = (
-    (df_merged['page_count'] == 0) & 
-    (~df_merged['category_updated'])
-)
-
-# 제거 대상 확인
-to_remove = df_merged[condition_remove]
-print(f"\n제거 대상:")
-print(f"- 행 수: {len(to_remove)}회 (베스트셀러 진입 기준)")
-print(f"- 고유 도서: {to_remove['item_id'].nunique()}개")
-print(f"- 이유: 성인 도서 (상세 페이지 접근 불가)")
-
-# 도서별 진입 횟수
-print(f"\n도서별 진입 횟수:")
-entry_counts = to_remove['item_id'].value_counts()
-for item_id, count in entry_counts.items():
-    if count > 1:
-        print(f"  item_id {item_id}: {count}회 진입 ← 2번 이상 진입")
-```
-
-**실행 결과:**
 ```
 제거 대상:
 - 행 수: 22회 (베스트셀러 진입 기준)
@@ -625,134 +354,40 @@ for item_id, count in entry_counts.items():
 - 이유: 성인 도서 (상세 페이지 접근 불가)
 
 도서별 진입 횟수:
-  item_id 12345678: 2회 진입 ← 2번 이상 진입
-  (나머지 20개는 각 1회씩 진입)
-```
-
-**핵심:**
-- **21개 고유 도서**가 **총 22회** 베스트셀러에 진입
+- 21개 고유 도서가 총 22회 베스트셀러에 진입
 - 이 중 1개 도서가 2번 진입
+```
 
 ### 3.3.3 데이터 정제
-```python
-# 성인 도서 제거
-df_cleaned = df_merged[~condition_remove].copy()
-df_cleaned = df_cleaned.drop(columns=['category_updated'])
-
-print(f"\n최종 데이터:")
-print(f"병합 후: {len(df_merged):,}개 행")
-print(f"제거: {len(to_remove)}개 행")
-print(f"최종: {len(df_cleaned):,}개 행")
-```
-
-**실행 결과:**
 ```
 최종 데이터:
-병합 후: 3,539개 행
-제거: 22개 행
-최종: 3,517개 행
+- 병합 후: 3,539개 행
+- 제거: 22개 행
+- 최종: 3,517개 행
 ```
 
 ## 3.4 데이터 검증
 
 ### 3.4.1 이상치 탐지
-```python
-# 가격 이상치
-print("\n[가격 분석]")
-print(df_cleaned['price'].describe())
 
-# 페이지 수 이상치
-print("\n[페이지 수 분석]")
-print(df_cleaned['page_count'].describe())
-
-# 평점 이상치
-print("\n[평점 분석]")
-print(df_cleaned['star_score'].describe())
+**가격 분석:**
+```
+평균: 15,296원
+최소: 0원 (무료 전자책)
+최대: 398,000원 (고가 전집)
 ```
 
-**실행 결과:**
+**페이지 수 분석:**
 ```
-[가격 분석]
-count    3517.00
-mean    15296.31
-std      4821.62
-min         0.00  ← 무료 전자책
-25%     12600.00
-50%     15120.00
-75%     17820.00
-max    398000.00  ← 고가 전집
-
-[페이지 수 분석]
-count    3517.00
-mean      334.21
-std       156.83
-min        16.00  ← 그림책
-25%       232.00
-50%       308.00
-75%       404.00
-max      2968.00  ← 전집
-
-[평점 분석]
-count    3517.00
-mean        9.05
-std         0.62
-min         0.00  ← 평점 없음
-25%         8.80
-50%         9.20
-75%         9.50
-max        10.00
+평균: 334쪽
+최소: 16쪽 (그림책)
+최대: 2,968쪽 (전집)
 ```
 
 **이상치 판단:**
-- 가격 0원: 무료 전자책 (정상)
-- 가격 398,000원: 고가 전집 (정상)
-- 페이지 2,968쪽: 전집 (정상)
 - 모든 이상치가 실제 도서 특성을 반영 → 제거 불필요
 
-### 3.4.2 데이터 타입 통일
-```python
-# 타입 변환
-df_cleaned['item_id'] = df_cleaned['item_id'].astype(str)
-df_cleaned['year'] = df_cleaned['year'].astype(int)
-df_cleaned['month'] = df_cleaned['month'].astype(int)
-df_cleaned['rank'] = df_cleaned['rank'].astype(int)
-df_cleaned['price'] = df_cleaned['price'].astype(int)
-df_cleaned['page_count'] = df_cleaned['page_count'].astype(int)
-df_cleaned['star_score'] = df_cleaned['star_score'].astype(float)
-
-# 타입 확인
-print("\n[데이터 타입]")
-print(df_cleaned.dtypes)
-```
-
-**실행 결과:**
-```
-[데이터 타입]
-year            int64
-month           int64
-rank            int64
-title          object
-author         object
-category       object
-price           int64
-star_score    float64
-item_id        object
-page_count      int64
-```
-
-### 3.4.3 중복 데이터 확인
-```python
-# 완전 중복 확인
-duplicates = df_cleaned.duplicated()
-print(f"\n완전 중복 행: {duplicates.sum()}개")
-
-# item_id + year + month 기준 중복 (정상)
-duplicates_key = df_cleaned.duplicated(subset=['item_id', 'year', 'month'])
-print(f"item_id + year + month 중복: {duplicates_key.sum()}개")
-print("→ 같은 도서가 같은 달에 여러 순위 진입 (정상)")
-```
-
-**실행 결과:**
+### 3.4.2 중복 데이터 확인
 ```
 완전 중복 행: 0개 ✅
 item_id + year + month 중복: 0개 ✅
@@ -776,21 +411,7 @@ item_id + year + month 중복: 0개 ✅
 | page_count | int64 | 페이지 수 | 0 | 216 |
 
 ### 3.5.2 최종 통계
-```python
-print("\n[최종 데이터 통계]")
-print(f"총 행 수: {len(df_cleaned):,}개")
-print(f"고유 도서: {df_cleaned['item_id'].nunique():,}개")
-print(f"기간: {df_cleaned['year'].min()}년 {df_cleaned['month'].min()}월")
-print(f"    ~ {df_cleaned['year'].max()}년 {df_cleaned['month'].max()}월")
-print(f"카테고리: {df_cleaned['category'].nunique()}개")
-print(f"평균 가격: {df_cleaned['price'].mean():,.0f}원")
-print(f"평균 페이지: {df_cleaned['page_count'].mean():.0f}쪽")
-print(f"평균 평점: {df_cleaned['star_score'].mean():.2f}점")
 ```
-
-**실행 결과:**
-```
-[최종 데이터 통계]
 총 행 수: 3,517개
 고유 도서: 1,939개
 기간: 2020년 1월 ~ 2025년 11월
@@ -850,31 +471,6 @@ print(f"평균 평점: {df_cleaned['star_score'].mean():.2f}점")
 └─────────────────────────────────────┘
 ```
 
-## 3.7 최종 데이터 저장
-```python
-# 저장
-import os
-os.makedirs('data/processed', exist_ok=True)
-df_cleaned.to_csv(
-    'data/processed/aladin_final_cleaned.csv', 
-    encoding='utf-8-sig', 
-    index=True
-)
-
-print("\n✔ 최종 파일 저장 완료")
-print(f"파일명: data/processed/aladin_final_cleaned.csv")
-print(f"인코딩: UTF-8-sig")
-print(f"크기: {os.path.getsize('data/processed/aladin_final_cleaned.csv') / 1024:.1f} KB")
-```
-
-**실행 결과:**
-```
-✔ 최종 파일 저장 완료
-파일명: data/processed/aladin_final_cleaned.csv
-인코딩: UTF-8-sig
-크기: 847.3 KB
-```
-
 ---
 
 # 4. 핵심 분석 결과
@@ -882,8 +478,6 @@ print(f"크기: {os.path.getsize('data/processed/aladin_final_cleaned.csv') / 10
 ## 4.1 2022년 가격·페이지 수 하락 분석
 
 ### 4.1.1 현상 확인
-
-![yearly_price](../data/visualizations/01_yearly_price_trend.png)
 
 **연도별 평균 가격 추이:**
 ```
@@ -906,8 +500,6 @@ print(f"크기: {os.path.getsize('data/processed/aladin_final_cleaned.csv') / 10
 ```
 
 ### 4.1.2 원인 분석: 3중 구조
-
-![price_verification](../data/visualizations/01_2_price_verification_by_genre.png)
 
 **1️⃣ 일반 도서 자체 하락 (가장 큰 원인)**
 ```
@@ -955,8 +547,6 @@ print(f"크기: {os.path.getsize('data/processed/aladin_final_cleaned.csv') / 10
 
 ### 4.2.1 수상 전후 비교
 
-![han_kang_before_after](../data/visualizations/12_han_kang_before_after.png)
-
 **베스트셀러 진입 횟수:**
 ```
 수상 전 (2020.1~2024.9, 57개월): 7회
@@ -965,8 +555,6 @@ print(f"크기: {os.path.getsize('data/processed/aladin_final_cleaned.csv') / 10
 ```
 
 ### 4.2.2 시장 점유율 변화
-
-![han_kang_vs_novels](../data/visualizations/11_han_kang_vs_total_novels.png)
 
 **소설 시장 내 점유율:**
 ```
@@ -987,8 +575,6 @@ print(f"크기: {os.path.getsize('data/processed/aladin_final_cleaned.csv') / 10
 
 ### 4.3.1 연도별 진입 횟수
 
-![slamdunk_yearly](../data/visualizations/04_1_slamdunk_yearly_count.png)
-
 **슬램덩크 관련 도서 진입 횟수:**
 ```
 2020년: 0회
@@ -1000,8 +586,6 @@ print(f"크기: {os.path.getsize('data/processed/aladin_final_cleaned.csv') / 10
 ```
 
 ### 4.3.2 만화 비중 변화
-
-![category_ratio](../data/visualizations/04_yearly_category_ratio.png)
 
 **만화 카테고리 비중:**
 ```
