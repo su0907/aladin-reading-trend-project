@@ -312,9 +312,9 @@ detail_category: 22개 (0.6%) ← 21개 고유 도서가 22회 진입
 
 | item_id | category (Before) | detail_category | category (After) |
 |---------|-------------------|-----------------|------------------|
-| 123456 | 국내도서 | 소설/시/희곡 | 소설/시/희곡 |
-| 234567 | 국내도서 | 인문학 | 인문학 |
-| 345678 | 국내도서 | NaN | 국내도서 (→ 제거) |
+| 123456 | 국내도서 | 소설/시/희곡 | 소설/시/희곡 ✅ |
+| 234567 | 국내도서 | 인문학 | 인문학 ✅ |
+| 345678 | 국내도서 | NaN | 국내도서 ❌ (→ 제거) |
 
 ### 3.2.3 최종 카테고리 분포
 ```
@@ -361,10 +361,10 @@ page_count = 0인 도서: 22개 (0.6%)
 
 ## 3.4 데이터 검증
 
-### 중복 데이터 확인
+**중복 데이터 확인:**
 ```
-완전 중복 행: 0개
-item_id + year + month 중복: 0개
+완전 중복 행: 0개 ✅
+item_id + year + month 중복: 0개 ✅
 ```
 
 ## 3.5 최종 데이터 구조
@@ -450,9 +450,9 @@ item_id + year + month 중복: 0개
 
 # 4. 핵심 분석 결과
 
-## 4.1 2022년 가격·페이지 수 하락 분석
+## 4.1 연도별 평균 가격 및 페이지 수 추이
 
-### 4.1.1 현상 확인
+![01_yearly_price_trend](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/01_yearly_price_trend.png)
 
 **연도별 평균 가격 추이:**
 ```
@@ -474,26 +474,46 @@ item_id + year + month 중복: 0개
 2025년: 328쪽 (-1.5%)
 ```
 
-### 4.1.2 원인 분석: 3중 구조
+---
 
-**1️⃣ 일반 도서 자체 하락 (가장 큰 원인)**
+### 4.1.1 2022년 하락 원인 검증 (1): 장르 구성 효과
+
+![01_1_price_verification_excluded](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/V01_price_verification_excluded.png)
+
+**만화/어린이 제외 일반 도서 분석:**
 ```
-만화/어린이 제외 일반 도서:
+2021년 → 2022년:
 - 가격: 16,541원 → 16,006원 (-3.2%)
-- 페이지: 412쪽 → 355쪽 (-13.8%) ← 주된 요인
-- 400쪽 이상 두꺼운 책: 158개 → 114개 (-7.6%p)
+- 페이지: 412쪽 → 355쪽 (-13.8%)
 ```
 
-**2️⃣ 저가·저페이지 장르 비중 증가**
+**인사이트:** 만화/어린이를 제외한 일반 도서만 분석해도 가격 3.2%, 페이지 13.8% 하락이 관찰됨. 이는 **일반 도서 자체의 변화**가 주된 요인임을 시사합니다.
+
+---
+
+### 4.1.2 2022년 하락 원인 검증 (2): 장르별 분해 분석
+
+![01_2_price_verification_by_genre](../data/visualizations/01_1_yearly_comics_children_check.png)
+
+**장르 구성 변화:**
 ```
 만화·어린이 비중:
 - 2021년: 138개 (23.2%)
 - 2022년: 154개 (25.7%) ← +2.5%p
-- 만화 평균 가격: 약 10,075원 (일반 도서의 63%)
-- 만화 평균 페이지: 약 197쪽 (일반 도서의 56%)
+
+만화 평균 가격: 약 10,075원 (일반 도서의 63%)
+만화 평균 페이지: 약 197쪽 (일반 도서의 56%)
 ```
 
-**3️⃣ 카테고리 구조 변화**
+**인사이트:** 저가·저페이지 장르(만화/어린이)의 비중이 2.5%p 증가하면서 전체 평균을 추가로 하락시키는 효과가 있었습니다.
+
+---
+
+### 4.1.3 2022년 하락 원인 검증 (3): 카테고리 구조 변화
+
+![01_3_category_change_2021_2022](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/V03_category_change_2021_2022.png)
+
+**카테고리별 진입 횟수 변화:**
 ```
 고가 카테고리 급감:
 - 경제경영: 72회 → 47회 (-34.7%)
@@ -508,19 +528,149 @@ item_id + year + month 중복: 0개
 **종합 효과:**
 ```
 전체 평균에 이중 효과:
-- 가격: -5.9% = (일반 -3.2%) + (장르 구성 -2.7%p)
-- 페이지: -14.0% = (일반 -13.8%) + (장르 구성 -0.2%p)
+- 가격: -5.9% = (일반 도서 자체 -3.2%) + (장르 구성 변화 -2.7%p)
+- 페이지: -14.0% = (일반 도서 자체 -13.8%) + (장르 구성 변화 -0.2%p)
 ```
 
-### 4.1.3 핵심 인사이트
+**핵심 인사이트:** 
 
-베스트셀러 평균 지표는 **장르 구성에 매우 민감하게 반응**함을 실증적으로 확인했습니다. 2022년 하락은 일반 도서 자체의 변화와 장르 구성 변화가 복합적으로 작용한 결과로 해석됩니다.
+2022년 가격·페이지 하락은 **3중 구조**로 설명됩니다:
+
+1. **일반 도서 자체의 변화** (가장 큰 원인): 400쪽 이상 두꺼운 책이 158개→114개로 감소 (-7.6%p)
+2. **저가·저페이지 장르 비중 증가**: 만화/어린이가 23.2%→25.7%로 증가 (+2.5%p)
+3. **카테고리 구조 변화**: 고가 장르(경제경영, 에세이) 급감, 저가 장르(만화, 자기계발) 증가
+
+이를 통해 **베스트셀러 평균 지표가 장르 구성에 매우 민감하게 반응**함을 실증했으며, 시장 분석 시 장르별 분해 분석의 필요성을 확인했습니다.
 
 ---
 
-## 4.2 한강 노벨문학상 효과
+## 4.2 월별 평균 가격 및 페이지 수 추이
 
-### 4.2.1 수상 전후 비교
+![02_monthly_price_trend](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/02_monthly_price_trend.png)
+
+**계절성 패턴:** 여름(6~8월) 가격 상승, 겨울(12~2월) 가격 하락 경향이 관찰됩니다.
+
+---
+
+## 4.3 연도별 카테고리 비중 변화
+
+![03_yearly_category_ratio](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/03_yearly_category_ratio.png)
+
+**주요 트렌드:**
+```
+인문학: 2020년 8% → 2025년 23% (약 3배 증가)
+경제경영: 2021년 20% → 2025년 8% (급감)
+만화: 2020년 17% → 2023년 32% (정점) → 2025년 15%
+```
+
+---
+
+## 4.4 슬램덩크 영화 개봉 효과
+
+![04_yearly_category_ratio](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/04_yearly_category_ratio.png)
+
+![04_1_slamdunk_yearly_count](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/V04_slamdunk_yearly_count.png)
+
+**슬램덩크 관련 도서 진입:**
+```
+2020~2022년: 0회
+2023년: 53회 ← 영화 개봉 (2023.01.04)
+2024년: 1회
+2025년: 0회
+```
+
+**만화 비중 변화:**
+```
+2022년: 25%
+2023년: 32% ← 정점 (슬램덩크가 만화 진입의 46% 차지)
+2024년: 20%
+```
+
+**인사이트:** 영화 흥행(490만 관객)과 원작 판매 증가 간 강한 상관관계를 확인했습니다.
+
+---
+
+## 4.5 월별 카테고리 진입 횟수 (히트맵)
+
+![05_monthly_category_heatmap](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/05_monthly_category_heatmap.png)
+
+월별·카테고리별 베스트셀러 진입 패턴을 시각화했습니다.
+
+---
+
+## 4.6 상위 카테고리 TOP 10
+
+![06_top_categories](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/06_top_categories.png)
+
+**TOP 5:**
+```
+1. 소설/시/희곡: 742회
+2. 만화: 453회
+3. 인문학: 335회
+4. 경제경영: 314회
+5. 어린이: 289회
+```
+
+---
+
+## 4.7 카테고리별 평균 가격
+
+![07_category_avg_price](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/07_category_avg_price.png)
+
+**고가 카테고리:** 수험서/자격증, 대학교재, 사회과학  
+**저가 카테고리:** 만화, 어린이
+
+---
+
+## 4.8 카테고리별 평균 페이지 수
+
+![08_category_avg_pages](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/08_category_avg_pages.png)
+
+**다페이지 카테고리:** 수험서/자격증, 대학교재, 여행  
+**소페이지 카테고리:** 만화, 어린이
+
+---
+
+## 4.9 카테고리별 평균 평점
+
+![09_category_avg_rating](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/09_category_avg_rating.png)
+
+대부분의 카테고리가 8.5~9.5점 범위에 분포합니다.
+
+---
+
+## 4.10 연도별 TOP 10 도서
+
+![10_yearly_top10](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/10_yearly_top10.png)
+
+연도별로 가장 많이 베스트셀러에 진입한 도서 TOP 10을 시각화했습니다.
+
+---
+
+## 4.11 한강 노벨문학상 효과 (1): 소설 시장 점유율
+
+![11_han_kang_vs_total_novels](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/11_han_kang_vs_total_novels.png)
+
+**소설 시장 내 점유율:**
+```
+수상 전 평균 (2020.1~2024.9): 0.5%
+수상 후 평균 (2024.10~2025.11): 7.2%
+증가: +6.7%p (14.4배)
+
+월별 최고점: 2024년 10월 17.3%
+```
+
+**핵심 인사이트:** 
+
+노벨문학상 수상(2024.10.10) 직후 한강 작가의 도서가 소설 시장의 **17.3%를 점유**하며 폭발적인 반응을 보였습니다. 이후 점유율은 점진적으로 감소하지만, 수상 후 14개월 평균 7.2%로 **수상 전 대비 14.4배 증가**를 유지하고 있습니다.
+
+이는 **외부 문화적 이벤트가 출판 시장에 즉각적이고 지속적인 영향**을 미친다는 것을 보여주며, 특히 권위 있는 상(노벨상)의 효과가 장기간 지속됨을 실증했습니다.
+
+---
+
+## 4.12 한강 노벨문학상 효과 (2): 수상 전후 비교
+
+![12_han_kang_before_after](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/12_han_kang_before_after.png)
 
 **베스트셀러 진입 횟수:**
 ```
@@ -529,76 +679,48 @@ item_id + year + month 중복: 0개
 증가율: +757% (약 8.6배)
 ```
 
-### 4.2.2 시장 점유율 변화
+**핵심 인사이트:**
 
-**소설 시장 내 점유율:**
-```
-수상 전 평균: 0.5%
-수상 후 평균: 7.2%
-증가: +6.7%p (14.4배)
+한강 작가의 베스트셀러 진입 빈도 분석 결과:
 
-월별 최고점: 2024년 10월 17.3%
-```
+1. **수상 전 (57개월)**: 평균 월 0.12회 진입 (8.1개월에 1번)
+2. **수상 후 (14개월)**: 평균 월 4.29회 진입 (매달 4.3번)
 
-### 4.2.3 핵심 인사이트
+이는 **35.7배**의 월평균 진입 빈도 증가를 의미하며, 수상 직후부터 현재(2025.11)까지 **지속적으로 베스트셀러 목록에 이름을 올리고 있음**을 보여줍니다.
 
-노벨문학상 수상이라는 외부 이벤트가 베스트셀러 시장에 미치는 영향을 정량적으로 확인했습니다. 수상 후 14개월간 평균 점유율이 14.4배 증가하며, 2024년 10월에는 소설 시장의 17.3%를 차지했습니다.
+특히 주목할 점은:
+- 수상 전: 주로 신작 출간 시기에만 베스트셀러 진입
+- 수상 후: 구작을 포함한 전작이 동시다발적으로 베스트셀러 진입
 
----
-
-## 4.3 슬램덩크 영화 개봉 효과
-
-### 4.3.1 연도별 진입 횟수
-
-**슬램덩크 관련 도서 진입 횟수:**
-```
-2020년: 0회
-2021년: 0회
-2022년: 0회
-2023년: 53회 ← 영화 개봉 (2023.01.04)
-2024년: 1회
-2025년: 0회
-```
-
-### 4.3.2 만화 비중 변화
-
-**만화 카테고리 비중:**
-```
-2020년: 17%
-2021년: 21%
-2022년: 25%
-2023년: 32% ← 정점 (슬램덩크 46% 기여)
-2024년: 20%
-2025년: 15%
-```
-
-### 4.3.3 핵심 인사이트
-
-영화 흥행(490만 관객, 일본 아카데미상)과 원작 만화 판매 증가 간 강한 상관관계가 관찰되었습니다. 슬램덩크 단일 시리즈가 2023년 만화 카테고리 베스트셀러 진입의 46%를 차지하며, 문화 콘텐츠 간 시너지 효과를 확인했습니다.
+이를 통해 **노벨상이 단순히 신작 판매에만 영향을 미치는 것이 아니라, 작가의 전체 작품군에 대한 재평가와 수요 증가로 이어진다**는 "후광 효과(Halo Effect)"를 확인했습니다.
 
 ---
 
-## 4.4 카테고리 비중 변화 (5년 트렌드)
+## 4.13 월별 베스트셀러 진입 도서 수
 
-**만화:**
-```
-2020년: 17% → 2023년: 32% (정점) → 2025년: 15%
-변화: +15%p → -17%p
-```
+![13_monthly_unique_books](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/13_monthly_unique_books.png)
 
-**인문학:**
-```
-2020년: 8% → 2025년: 23%
-변화: +15%p (약 3배 증가)
-```
+월별로 베스트셀러 TOP 50에 진입한 고유 도서 수를 시각화했습니다.
 
-**경제경영:**
-```
-2020년: 18% → 2021년: 20% (정점) → 2025년: 8%
-변화: +2%p → -12%p
-```
+---
 
-> **Note:** 전체 코드는 [GitHub Repository](https://github.com/su0907/aladin-reading-trend-project/blob/main/notebooks/03_visualization.ipynb)에서 확인 가능합니다.
+## 4.14 가격대별 분포
+
+![14_price_distribution](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/14_price_distribution.png)
+
+대부분의 도서가 10,000~20,000원 구간에 집중되어 있습니다.
+
+---
+
+## 4.15 페이지 수 분포
+
+![15_page_distribution](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/15_page_distribution.png)
+
+200~400쪽 구간에 가장 많은 도서가 분포합니다.
+
+---
+
+> **Note:** 전체 시각화 코드는 [GitHub Repository](https://github.com/su0907/aladin-reading-trend-project/blob/main/notebooks/03_visualization.ipynb)에서 확인 가능합니다.
 
 ---
 
