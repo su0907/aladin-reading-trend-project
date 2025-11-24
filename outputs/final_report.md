@@ -163,7 +163,7 @@ URL: https://www.aladin.co.kr/shop/wproduct.aspx?ItemId={item_id}
 
 ### 2.3.3 병렬 처리 구현
 
-고유 도서 1,960개의 상세 페이지를 효율적으로 크롤링하기 위해 **ThreadPoolExecutor**를 사용한 병렬 처리를 구현했습니다 (10개 스레드 동시 실행).
+고유 도서 1,958개의 상세 페이지를 효율적으로 크롤링하기 위해 **ThreadPoolExecutor**를 사용한 병렬 처리를 구현했습니다 (10개 스레드 동시 실행).
 
 > **Note:** 전체 코드는 [GitHub Repository](https://github.com/su0907/aladin-reading-trend-project/blob/main/notebooks/01_crawling.ipynb)에서 확인 가능합니다.
 
@@ -253,7 +253,7 @@ data/
 **aladin.csv (1차 크롤링):**
 ```
 총 행 수: 3,539개
-고유 도서: 1,960개
+고유 도서: 1,958개
 결측치: 없음
 
 특징:
