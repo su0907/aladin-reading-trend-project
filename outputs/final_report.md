@@ -165,7 +165,7 @@ URL: https://www.aladin.co.kr/shop/wproduct.aspx?ItemId={item_id}
 
 고유 도서 1,960개의 상세 페이지를 효율적으로 크롤링하기 위해 **ThreadPoolExecutor**를 사용한 병렬 처리를 구현했습니다 (10개 스레드 동시 실행).
 
-> **Note:** 전체 코드는 [GitHub Repository](https://github.com/username/aladin-project)에서 확인 가능합니다.
+> **Note:** 전체 코드는 [GitHub Repository](https://github.com/su0907/aladin-reading-trend-project/blob/main/notebooks/01_crawling.ipynb)에서 확인 가능합니다.
 
 ### 2.3.4 수집 결과
 ```
@@ -471,6 +471,8 @@ item_id + year + month 중복: 0개 ✅
 └─────────────────────────────────────┘
 ```
 
+> **Note:** 전체 코드는 [GitHub Repository](https://github.com/su0907/aladin-reading-trend-project/blob/main/notebooks/02_data_preprocessing.ipynb)에서 확인 가능합니다.
+
 ---
 
 # 4. 핵심 분석 결과
@@ -623,6 +625,8 @@ item_id + year + month 중복: 0개 ✅
 변화: +2%p → -12%p
 ```
 
+> **Note:** 전체 코드는 [GitHub Repository](https://github.com/su0907/aladin-reading-trend-project/blob/main/notebooks/03_visualization.ipynb)에서 확인 가능합니다.
+
 ---
 
 # 5. 결론
@@ -676,7 +680,7 @@ item_id + year + month 중복: 0개 ✅
 
 ---
 
-## 연구의 한계 및 향후 과제
+## 연구의 한계
 
 **1. 데이터 범위의 한계**
 - 알라딘 단일 플랫폼만 분석 (교보문고, YES24 등 미포함)
@@ -685,11 +689,6 @@ item_id + year + month 중복: 0개 ✅
 **2. 인과관계 검증의 한계**
 - 외부 이벤트와 판매 증가 간 강한 상관관계 확인
 - 직접적 인과관계 입증을 위해서는 추가 연구 필요 (언론 보도량, SNS 확산, 독자 구매 동기 등)
-
-**3. 향후 연구 방향**
-- 다중 플랫폼 데이터 통합 분석
-- 독자 설문조사를 통한 정성적 데이터 수집
-- 실시간 모니터링 시스템 구축
 
 ---
 
@@ -715,7 +714,7 @@ item_id + year + month 중복: 0개 ✅
 ## GitHub Repository
 
 **프로젝트 전체 코드 및 데이터:**  
-https://github.com/username/aladin-project
+https://github.com/su0907/aladin-reading-trend-project/tree/main
 
 **포함 내용:**
 - 크롤링 코드 (1차, 2차)
