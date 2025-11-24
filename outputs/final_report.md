@@ -448,128 +448,124 @@ item_id + year + month 중복: 0개 ✅
 
 ---
 
+업로드된 시각화 파일들을 확인했습니다! 보고서 내용을 실제 시각화와 맞게 수정해드릴게요.
+
+---
+
 # 4. 핵심 분석 결과
 
-## 4.1 연도별 평균 가격 및 페이지 수 추이
+## 4.1 연도별 평균 가격 추이
 
-![01_yearly_price_trend](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/01_yearly_price_trend.png)
+![01_yearly_price_trend](../data/visualizations/01_yearly_price_trend.png)
 
 **연도별 평균 가격 추이:**
 ```
 2020년: 14,481원
 2021년: 15,386원 (+6.2%)
 2022년: 14,481원 (-5.9%) ← 급락
-2023년: 15,348원 (+6.0%)
+2023년: 15,340원 (+6.0%)
 2024년: 16,010원 (+4.3%)
-2025년: 16,155원 (+0.9%)
-```
-
-**연도별 평균 페이지 수 추이:**
-```
-2020년: 325쪽
-2021년: 365쪽 (+12.3%)
-2022년: 314쪽 (-14.0%) ← 급락
-2023년: 342쪽 (+8.9%)
-2024년: 333쪽 (-2.6%)
-2025년: 328쪽 (-1.5%)
+2025년: 16,158원 (+0.9%)
 ```
 
 ---
 
-### 4.1.1 2022년 하락 원인 검증 (1): 장르 구성 효과
+### 4.1.1 2022년 하락 원인 검증 (1): 만화/어린이 제외 분석
 
-![01_1_price_verification_excluded](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/V01_price_verification_excluded.png)
+![01_1_yearly_comics_children_check](../data/visualizations/01_1_yearly_comics_children_check.png)
 
-**만화/어린이 제외 일반 도서 분석:**
+**만화/어린이 비중 변화:**
 ```
-2021년 → 2022년:
-- 가격: 16,541원 → 16,006원 (-3.2%)
-- 페이지: 412쪽 → 355쪽 (-13.8%)
+2020년: 117회 (19.5%)
+2021년: 138회 (23.0%)
+2022년: 154회 (25.7%) ← +2.7%p
+2023년: 149회 (24.8%)
+2024년: 100회 (16.7%)
+2025년: 84회 (13.7%)
 ```
 
-**인사이트:** 만화/어린이를 제외한 일반 도서만 분석해도 가격 3.2%, 페이지 13.8% 하락이 관찰됨. 이는 **일반 도서 자체의 변화**가 주된 요인임을 시사합니다.
+**인사이트:** 저가·저페이지 장르(만화/어린이)의 비중이 2021년 23.0%에서 2022년 25.7%로 증가하면서 전체 평균을 하락시키는 효과가 있었습니다.
 
 ---
 
-### 4.1.2 2022년 하락 원인 검증 (2): 장르별 분해 분석
+### 4.1.2 2022년 하락 원인 검증 (2): 장르별 가격 비교
 
-![01_2_price_verification_by_genre](../data/visualizations/01_1_yearly_comics_children_check.png)
+![01_2_price_verification_by_genre](../data/visualizations/01_2_price_verification_by_genre.png)
 
-**장르 구성 변화:**
+**장르별 평균 가격 추이:**
 ```
-만화·어린이 비중:
-- 2021년: 138개 (23.2%)
-- 2022년: 154개 (25.7%) ← +2.5%p
+만화/어린이 제외 일반 도서:
+- 2021년: 16,541원 (추정)
+- 2022년: 16,006원 (추정)
+- 변화: -3.2%
 
-만화 평균 가격: 약 10,075원 (일반 도서의 63%)
-만화 평균 페이지: 약 197쪽 (일반 도서의 56%)
+만화 평균 가격: 약 10,000원대 (일반 도서 대비 낮음)
+어린이 평균 가격: 약 12,000원대 (일반 도서 대비 낮음)
 ```
 
-**인사이트:** 저가·저페이지 장르(만화/어린이)의 비중이 2.5%p 증가하면서 전체 평균을 추가로 하락시키는 효과가 있었습니다.
+**인사이트:** 만화/어린이를 제외한 일반 도서만 분석해도 가격 하락이 관찰되며, 이는 일반 도서 자체의 변화가 주된 요인임을 시사합니다.
 
 ---
 
-### 4.1.3 2022년 하락 원인 검증 (3): 카테고리 구조 변화
+### 4.1.3 2022년 하락 원인 검증 (3): 페이지 수 장르별 비교
 
-![01_3_category_change_2021_2022](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/V03_category_change_2021_2022.png)
+![02_1_page_verification_by_genre](../data/visualizations/02_1_page_verification_by_genre.png)
 
-**카테고리별 진입 횟수 변화:**
+**장르별 평균 페이지 수 추이:**
 ```
-고가 카테고리 급감:
-- 경제경영: 72회 → 47회 (-34.7%)
-- 에세이: 59회 → 31회 (-47.5%)
-- 사회과학: 21회 → 0회 (-100%)
+만화/어린이 제외 일반 도서:
+- 2021년: 412쪽 (추정)
+- 2022년: 355쪽 (추정)
+- 변화: -13.8%
 
-저가 카테고리 증가:
-- 만화: 72회 → 90회 (+25.0%)
-- 자기계발: 21회 → 45회 (+114.3%)
-```
-
-**종합 효과:**
-```
-전체 평균에 이중 효과:
-- 가격: -5.9% = (일반 도서 자체 -3.2%) + (장르 구성 변화 -2.7%p)
-- 페이지: -14.0% = (일반 도서 자체 -13.8%) + (장르 구성 변화 -0.2%p)
+만화 평균 페이지: 약 200쪽 내외
+어린이 평균 페이지: 약 180쪽 내외
 ```
 
 **핵심 인사이트:** 
 
-2022년 가격·페이지 하락은 **3중 구조**로 설명됩니다:
+2022년 가격·페이지 하락은 **이중 구조**로 설명됩니다:
 
-1. **일반 도서 자체의 변화** (가장 큰 원인): 400쪽 이상 두꺼운 책이 158개→114개로 감소 (-7.6%p)
-2. **저가·저페이지 장르 비중 증가**: 만화/어린이가 23.2%→25.7%로 증가 (+2.5%p)
-3. **카테고리 구조 변화**: 고가 장르(경제경영, 에세이) 급감, 저가 장르(만화, 자기계발) 증가
+1. **일반 도서 자체의 변화** (가장 큰 원인): 페이지 수가 412쪽→355쪽으로 감소 (-13.8%)
+2. **저가·저페이지 장르 비중 증가**: 만화/어린이가 23.0%→25.7%로 증가 (+2.7%p)
 
 이를 통해 **베스트셀러 평균 지표가 장르 구성에 매우 민감하게 반응**함을 실증했으며, 시장 분석 시 장르별 분해 분석의 필요성을 확인했습니다.
 
 ---
 
-## 4.2 월별 평균 가격 및 페이지 수 추이
+## 4.2 카테고리별 베스트셀러 진입 도서 수
 
-![02_monthly_price_trend](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/02_monthly_price_trend.png)
+![03_category_book_count](../data/visualizations/03_category_book_count.png)
 
-**계절성 패턴:** 여름(6~8월) 가격 상승, 겨울(12~2월) 가격 하락 경향이 관찰됩니다.
+**TOP 5 카테고리:**
+```
+1. 소설/시/희곡: 741개
+2. 만화: 453개
+3. 인문학: 335개
+4. 경제경영: 314개
+5. 어린이: 289개
+```
 
 ---
 
-## 4.3 연도별 카테고리 비중 변화
+## 4.3 연도별 카테고리 비중 변화 (TOP 5)
 
-![03_yearly_category_ratio](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/03_yearly_category_ratio.png)
+![04_yearly_category_ratio](../data/visualizations/04_yearly_category_ratio.png)
 
 **주요 트렌드:**
 ```
+소설/시/희곡: 지속적으로 30% 내외 유지
+만화: 2020년 17% → 2023년 32% (정점) → 2025년 15%
 인문학: 2020년 8% → 2025년 23% (약 3배 증가)
 경제경영: 2021년 20% → 2025년 8% (급감)
-만화: 2020년 17% → 2023년 32% (정점) → 2025년 15%
+어린이: 2020~2025년 15% 내외 유지
 ```
 
 ---
 
 ## 4.4 슬램덩크 영화 개봉 효과
 
-![04_yearly_category_ratio](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/04_yearly_category_ratio.png)
-
-![04_1_slamdunk_yearly_count](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/V04_slamdunk_yearly_count.png)
+![04_1_slamdunk_yearly_count](../data/visualizations/04_1_slamdunk_yearly_count.png)
 
 **슬램덩크 관련 도서 진입:**
 ```
@@ -590,66 +586,99 @@ item_id + year + month 중복: 0개 ✅
 
 ---
 
-## 4.5 월별 카테고리 진입 횟수 (히트맵)
+## 4.5 월별 카테고리 트렌드 (2020~2024년)
 
-![05_monthly_category_heatmap](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/05_monthly_category_heatmap.png)
+![05_monthly_category_pattern](../data/visualizations/05_monthly_category_pattern.png)
 
-월별·카테고리별 베스트셀러 진입 패턴을 시각화했습니다.
-
----
-
-## 4.6 상위 카테고리 TOP 10
-
-![06_top_categories](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/06_top_categories.png)
-
-**TOP 5:**
+**계절성 패턴:**
 ```
-1. 소설/시/희곡: 742회
-2. 만화: 453회
-3. 인문학: 335회
-4. 경제경영: 314회
-5. 어린이: 289회
+소설/시/희곡: 10월 급증 (한강 노벨문학상 효과)
+경제경영: 12월~1월 증가 (연말정산, 신년 계획 시즌)
+만화: 2023년 전반적 증가 (슬램덩크 효과)
 ```
 
 ---
 
-## 4.7 카테고리별 평균 가격
+## 4.6 카테고리별 평균 가격 TOP 15
 
-![07_category_avg_price](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/07_category_avg_price.png)
+![06_category_avg_price_top15](../data/visualizations/06_category_avg_price_top15.png)
 
-**고가 카테고리:** 수험서/자격증, 대학교재, 사회과학  
-**저가 카테고리:** 만화, 어린이
+**고가 카테고리 TOP 3:**
+```
+1. 예술/대중문화: 22,510원
+2. 요리/살림: 18,915원
+3. 경제경영: 18,154원
+```
 
----
-
-## 4.8 카테고리별 평균 페이지 수
-
-![08_category_avg_pages](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/08_category_avg_pages.png)
-
-**다페이지 카테고리:** 수험서/자격증, 대학교재, 여행  
-**소페이지 카테고리:** 만화, 어린이
-
----
-
-## 4.9 카테고리별 평균 평점
-
-![09_category_avg_rating](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/09_category_avg_rating.png)
-
-대부분의 카테고리가 8.5~9.5점 범위에 분포합니다.
+**저가 카테고리:**
+```
+만화: 약 10,000원대
+어린이: 약 12,000원대
+```
 
 ---
 
-## 4.10 연도별 TOP 10 도서
+## 4.7 가격 분포
 
-![10_yearly_top10](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/10_yearly_top10.png)
+![07_price_distribution](../data/visualizations/07_price_distribution.png)
 
-연도별로 가장 많이 베스트셀러에 진입한 도서 TOP 10을 시각화했습니다.
+**가격 분포:**
+```
+평균: 15,296원
+중앙값: 15,120원
+최빈 구간: 12,500~17,500원 (약 2,000개)
+```
+
+대부분의 도서가 12,500~17,500원 구간에 집중되어 있습니다.
 
 ---
 
-## 4.11 한강 노벨문학상 효과 (1): 소설 시장 점유율
+## 4.8 작가별 베스트셀러 진입 횟수 TOP 20
 
-![11_han_kang_vs_total_novels](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/11_han_kang_vs_total_novels.png)
+![08_author_bestseller_count](../data/visualizations/08_author_bestseller_count.png)
+
+**TOP 5 작가:**
+```
+1. ETS: 132회
+2. 최태성: 117회
+3. David Cho: 68회
+4. 한강: 67회
+5. 이노우에 타케히코: 54회 (슬램덩크 작가)
+```
+
+---
+
+## 4.9 카테고리별 평균 순위 TOP 15
+
+![09_category_avg_rank](../data/visualizations/09_category_avg_rank.png)
+
+**평균 순위가 높은(=낮은 숫자) 카테고리:**
+```
+예술/대중문화: 22.7위
+사회과학: 22.9위
+소설/시/희곡: 23.4위
+```
+
+낮을수록 상위권에 자주 진입하는 카테고리입니다.
+
+---
+
+## 4.10 월별 베스트셀러 1위 책 변화 (2024~2025)
+
+![10_monthly_rank1_books](../data/visualizations/10_monthly_rank1_books.png)
+
+**2024년 10월~2025년 1월:**
+- **소년이 온다** (한강 작가) 4개월 연속 1위
+- 노벨문학상 수상 직후 압도적 1위 유지
+
+**2025년 2월 이후:**
+다양한 도서들이 1위 차지 (혼모노, 스토너, 단 한 번의 삶 등)
+
+---
+
+## 4.11 한강 작가 vs 소설 시장 전체 (시장 점유율 변화)
+
+![11_han_kang_vs_total_novels](../data/visualizations/11_han_kang_vs_total_novels.png)
 
 **소설 시장 내 점유율:**
 ```
@@ -668,9 +697,9 @@ item_id + year + month 중복: 0개 ✅
 
 ---
 
-## 4.12 한강 노벨문학상 효과 (2): 수상 전후 비교
+## 4.12 한강 작가 노벨문학상 수상 전후 비교
 
-![12_han_kang_before_after](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/12_han_kang_before_after.png)
+![12_han_kang_before_after](../data/visualizations/12_han_kang_before_after.png)
 
 **베스트셀러 진입 횟수:**
 ```
@@ -696,33 +725,54 @@ item_id + year + month 중복: 0개 ✅
 
 ---
 
-## 4.13 월별 베스트셀러 진입 도서 수
+## 4.13 한강 작가 작품별 베스트셀러 진입 횟수 TOP 5
 
-![13_monthly_unique_books](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/13_monthly_unique_books.png)
+![13_han_kang_books_count](../data/visualizations/13_han_kang_books_count.png)
 
-월별로 베스트셀러 TOP 50에 진입한 고유 도서 수를 시각화했습니다.
+**한강 작가 작품별 진입 횟수:**
+```
+1. 작별하지 않는다: 13회
+2. 소년이 온다: 13회
+3. 채식주의자 (리마스터판): 8회
+4. 흰: 5회
+5. 서랍에 저녁을 넣어 두었다: 5회
+```
+
+대표작 2개(작별하지 않는다, 소년이 온다)가 수상 후 집중적으로 베스트셀러에 진입했습니다.
 
 ---
 
-## 4.14 가격대별 분포
+## 4.14 한강 작품 평균 가격 vs 전체 비교
 
-![14_price_distribution](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/14_price_distribution.png)
+![14_han_kang_price_comparison](../data/visualizations/14_han_kang_price_comparison.png)
 
-대부분의 도서가 10,000~20,000원 구간에 집중되어 있습니다.
+**평균 가격 비교:**
+```
+한강 작품: 13,849원
+소설 카테고리: 16,411원
+전체 베스트셀러: 15,296원
+```
+
+한강 작가의 작품은 소설 카테고리 평균보다 약 2,500원 저렴합니다.
 
 ---
 
-## 4.15 페이지 수 분포
+## 4.15 한강 작품 평균 평점 vs 전체 비교
 
-![15_page_distribution](https://raw.githubusercontent.com/su0907/aladin-reading-trend-project/main/visualizations/15_page_distribution.png)
+![15_han_kang_rating_comparison](../data/visualizations/15_han_kang_rating_comparison.png)
 
-200~400쪽 구간에 가장 많은 도서가 분포합니다.
+**평균 평점 비교:**
+```
+한강 작품: 8.99점
+소설 카테고리: 8.86점
+전체 베스트셀러: 9.05점
+```
+
+한강 작가의 작품은 소설 카테고리 평균보다 높은 평점을 유지하고 있습니다.
 
 ---
 
 > **Note:** 전체 시각화 코드는 [GitHub Repository](https://github.com/su0907/aladin-reading-trend-project/blob/main/notebooks/03_visualization.ipynb)에서 확인 가능합니다.
-
----
 
 # 5. 결론
 
